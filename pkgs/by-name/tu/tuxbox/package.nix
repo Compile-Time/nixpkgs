@@ -2,6 +2,8 @@
   lib,
   fetchFromGitHub,
   python313Packages,
+  nix-update-script,
+  versionCheckHook,
 }:
 python313Packages.buildPythonApplication (finalAttrs: {
   pname = "tuxbox";
@@ -11,8 +13,8 @@ python313Packages.buildPythonApplication (finalAttrs: {
   src = fetchFromGitHub {
     owner = "AndyCappDev";
     repo = "tuxbox";
-    rev = "606a1604cf4e03c331ad034d8f60b263fc395fd7";
-    hash = "sha256-hBk4KhLNMgk8bFCZPQMtQlJ1/RB9qcL4kiF+eb3n4LU=";
+    rev = "67e38741d1951267902cdb0583e7708a19571aa0";
+    hash = "sha256-/faAuCUkQfCYArCijU1B+7ux5/p/MHdf1G9yRSVQtFc=";
   };
 
   build-system = [ python313Packages.setuptools ];
@@ -24,12 +26,9 @@ python313Packages.buildPythonApplication (finalAttrs: {
     pyside6
   ];
 
-  patches = [
-    # TuxBox uses a pgrep command to check if there is a running driver process.
-    # However, the search argument does not work for NixOS - `python.*-m.*tuxbox`.
-    # Therefore, a patch is applied to use `tuxbox-wrapped` for the search since that is the name the process will spawn as when using this package.
-    ./change-pgrep-command.patch
-  ];
+  passthru.updateScript = nix-update-script { };
+
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   meta = {
     changelog = "https://github.com/AndyCappDev/tuxbox/releases/tag/${finalAttrs.version}";
