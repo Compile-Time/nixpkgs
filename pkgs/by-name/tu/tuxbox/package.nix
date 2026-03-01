@@ -1,11 +1,11 @@
 {
   lib,
   fetchFromGitHub,
-  python313Packages,
+  python3Packages,
   nix-update-script,
   versionCheckHook,
 }:
-python313Packages.buildPythonApplication (finalAttrs: {
+python3Packages.buildPythonApplication (finalAttrs: {
   pname = "tuxbox";
   version = "3.0.1";
   pyproject = true;
@@ -17,9 +17,9 @@ python313Packages.buildPythonApplication (finalAttrs: {
     hash = "sha256-/faAuCUkQfCYArCijU1B+7ux5/p/MHdf1G9yRSVQtFc=";
   };
 
-  build-system = [ python313Packages.setuptools ];
+  build-system = [ python3Packages.setuptools ];
 
-  dependencies = with python313Packages; [
+  dependencies = with python3Packages; [
     bleak
     evdev
     pyserial
